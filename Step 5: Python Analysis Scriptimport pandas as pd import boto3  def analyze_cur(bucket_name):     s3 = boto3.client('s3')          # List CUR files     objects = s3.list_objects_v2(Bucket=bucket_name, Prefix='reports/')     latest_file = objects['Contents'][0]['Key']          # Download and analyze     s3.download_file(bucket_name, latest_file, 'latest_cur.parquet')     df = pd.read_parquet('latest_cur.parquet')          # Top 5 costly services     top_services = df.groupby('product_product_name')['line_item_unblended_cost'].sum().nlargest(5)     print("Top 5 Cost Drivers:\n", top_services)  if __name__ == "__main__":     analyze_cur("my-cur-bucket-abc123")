@@ -1,0 +1,20 @@
+import pandas as pd
+import boto3
+
+def analyze_cur(bucket_name):
+    s3 = boto3.client('s3')
+    
+    # List CUR files
+    objects = s3.list_objects_v2(Bucket=bucket_name, Prefix='reports/')
+    latest_file = objects['Contents'][0]['Key']
+    
+    # Download and analyze
+    s3.download_file(bucket_name, latest_file, 'latest_cur.parquet')
+    df = pd.read_parquet('latest_cur.parquet')
+    
+    # Top 5 costly services
+    top_services = df.groupby('product_product_name')['line_item_unblended_cost'].sum().nlargest(5)
+    print("Top 5 Cost Drivers:\n", top_services)
+
+if __name__ == "__main__":
+    analyze_cur("my-cur-bucket-abc123")
