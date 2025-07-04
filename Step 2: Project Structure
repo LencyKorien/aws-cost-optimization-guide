@@ -1,0 +1,3 @@
+# Create these files
+touch README.md terraform/main.tf scripts/cur_analyzer.py docs/setup_guide.md
+mkdir -p images/screenshots
