@@ -1,0 +1,3 @@
+# Create project directory
+mkdir aws-cur-implementation && cd aws-cur-implementation
+git init
